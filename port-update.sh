@@ -9,6 +9,9 @@ CENSORED_QBITTORRENT_WEBUI_PASSWORD=$(echo $QBITTORRENT_WEBUI_PASSWORD | sed 's/
 echo "QBITTORRENT_WEBUI_PASSWORD=$CENSORED_QBITTORRENT_WEBUI_PASSWORD"
 echo "GLUETUN_CONTROL_HOST=$GLUETUN_CONTROL_HOST"
 echo "GLUETUN_CONTROL_PORT=$GLUETUN_CONTROL_PORT"
+echo "GLUETUN_AUTH_USER=$GLUETUN_AUTH_USER"
+echo "GLUETUN_AUTH_PASSWORD=$GLUETUN_AUTH_PASSWORD"
+echo "GLUETUN_AUTH_APIKEY=$GLUETUN_AUTH_APIKEY"
 echo "INITIAL_DELAY_SEC=$INITIAL_DELAY_SEC"
 echo "CHECK_INTERVAL_SEC=$CHECK_INTERVAL_SEC"
 echo "ERROR_INTERVAL_SEC=$ERROR_INTERVAL_SEC"
@@ -16,6 +19,18 @@ echo "ERROR_INTERVAL_COUNT=$ERROR_INTERVAL_COUNT"
 
 qbittorrent_base_url="http://$QBITTORRENT_WEBUI_HOST:$QBITTORRENT_WEBUI_PORT"
 gluetun_base_url="http://$GLUETUN_CONTROL_HOST:$GLUETUN_CONTROL_PORT"
+gluetun_auth=""
+
+if [ -z "$GLUETUN_AUTH_APIKEY" ]; then
+    echo "Setting gluetun auth to API Key"
+    gluetun_auth="--header \"X-API-Key: $GLUETUN_AUTH_APIKEY\""
+elif [ -z "$GLUETUN_AUTH_USER" ] && [ -z "$GLUETUN_AUTH_PASSWORD" ]; then
+    echo "Setting gluetun auth to API Key"
+    gluetun_auth="--user $GLUETUN_AUTH_USER:$GLUETUN_AUTH_PASSWORD"
+else
+    echo "No gluetun auth provided"
+    gluetun_auth=""
+fi
 
 current_port="0"
 new_port=$current_port
@@ -36,7 +51,7 @@ do
     fi
 
     echo "Checking port..."
-    new_port=$(curl $gluetun_base_url/v1/openvpn/portforwarded 2> /dev/null | jq .port)
+    new_port=$(curl $gluetun_auth $gluetun_base_url/v1/openvpn/portforwarded 2> /dev/null | jq .port)
     echo "Received: $new_port"
 
     if [ -z "$new_port" ] || [ "$new_port" = "0" ]; then
