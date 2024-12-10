@@ -1,3 +1,7 @@
+# Disclaimer
+**Original code and work all forked from https://codeberg.org/TechnoSam/qbittorrent-gluetun-port-update/src/branch/master**
+**Credit for code, ideas and core functionality all go to https://codeberg.org/TechnoSam**
+
 # qBittorrent Gluetun port update
 
 Docker container to automatically update qBittorrent's listening port from Gluetun.
