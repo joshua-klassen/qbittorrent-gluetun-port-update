@@ -22,11 +22,11 @@ qbittorrent_base_url="http://$QBITTORRENT_WEBUI_HOST:$QBITTORRENT_WEBUI_PORT"
 gluetun_base_url="http://$GLUETUN_CONTROL_HOST:$GLUETUN_CONTROL_PORT"
 gluetun_auth=""
 
-if [ -z "$GLUETUN_AUTH_APIKEY" ]; then
+if [ ! -z "$GLUETUN_AUTH_APIKEY" ]; then
     echo "Setting gluetun auth to API Key"
     gluetun_auth="--header X-API-Key:$GLUETUN_AUTH_APIKEY"
-elif [ -z "$GLUETUN_AUTH_USER" ] && [ -z "$GLUETUN_AUTH_PASSWORD" ]; then
-    echo "Setting gluetun auth to API Key"
+elif [ ! -z "$GLUETUN_AUTH_USER" ] && [ ! -z "$GLUETUN_AUTH_PASSWORD" ]; then
+    echo "Setting gluetun auth to user"
     gluetun_auth="--user $GLUETUN_AUTH_USER:$GLUETUN_AUTH_PASSWORD"
 else
     echo "No gluetun auth provided"

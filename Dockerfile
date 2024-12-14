@@ -1,7 +1,8 @@
 FROM alpine:3.18
 
 RUN apk add --no-cache curl && \
-    apk add --no-cache jq
+    apk add --no-cache jq && \
+    apk add --no-cache vim
 
 ENV QBITTORRENT_WEBUI_HOST=127.0.0.1 \
     QBITTORRENT_WEBUI_PORT=8080 \
@@ -17,4 +18,3 @@ ENV QBITTORRENT_WEBUI_HOST=127.0.0.1 \
 COPY port-update.sh /port-update.sh
 
 CMD ["/bin/sh", "/port-update.sh"]
-
