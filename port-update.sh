@@ -1,5 +1,6 @@
 trap "echo Caught SIGTERM, exiting; exit 0" TERM
 
+
 echo "Starting qbittorent-gluetun-port-update"
 echo "Config:"
 echo "QBITTORRENT_WEBUI_HOST=$QBITTORRENT_WEBUI_HOST"
@@ -23,7 +24,7 @@ gluetun_auth=""
 
 if [ -z "$GLUETUN_AUTH_APIKEY" ]; then
     echo "Setting gluetun auth to API Key"
-    gluetun_auth="--header \"X-API-Key: $GLUETUN_AUTH_APIKEY\""
+    gluetun_auth="--header X-API-Key:$GLUETUN_AUTH_APIKEY"
 elif [ -z "$GLUETUN_AUTH_USER" ] && [ -z "$GLUETUN_AUTH_PASSWORD" ]; then
     echo "Setting gluetun auth to API Key"
     gluetun_auth="--user $GLUETUN_AUTH_USER:$GLUETUN_AUTH_PASSWORD"
